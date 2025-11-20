@@ -87,7 +87,8 @@ class LinkedList():
         current = self.head
         while current:
             if index == 0:
-                return current.value
+                print(current.value)
+                return
             else:
                 index -= 1
                 current = current.next
@@ -96,21 +97,34 @@ class LinkedList():
 
     def searchValue(self,value):
         current = self.head
+        res = LinkedList()
         index = 0
         while current:
             if current.value == value:
-                return index
-            else:
-                index += 1
-                current = current.next
-        self.enf()
-        return 
-
-    def output(self):
-        current = self.head
-        while current:
-            print(current.value)
+                res.newAppend(index)
+            index += 1
             current = current.next
+        
+        if res.head:
+            res.output()
+        else:
+            self.enf()
+            return 
+        
+    def output(self):
+        if not self.head:
+            self.lie()
+            return
+        
+        res = '['
+        current = self.head
+        while current.next:
+            res += str(current.value)
+            res += ', '
+            current = current.next
+        res += str(current.value)
+        res += ']'
+        print(res)
 
 ## TODO optimisation with searchIndex(pop and insert)
 ## TODO optimisation with searchValue(remove)
@@ -142,16 +156,15 @@ print('________')
 newList.newRemove('bye')
 newList.output()
 print('________')
-print(
 newList.searchIndex(0)
-,newList.searchIndex(3)
-,newList.searchIndex(-5)
-,newList.searchIndex(5)
-)
+newList.searchIndex(3)
+newList.searchIndex(-5)
+newList.searchIndex(5)
 print('________')
-print(
 newList.searchValue(1)
-,newList.searchValue(4)
-,newList.searchValue('bye')
-,newList.searchValue(55)
-)
+newList.searchValue(4)
+newList.searchValue('bye')
+newList.searchValue(55)
+print('________')
+newList.newAppend(4)
+newList.searchValue(4)
