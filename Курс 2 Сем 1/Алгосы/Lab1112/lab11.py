@@ -20,6 +20,8 @@ class LinkedList():
         print('Однонаправленный список не поддерживает работу с конца')
     def enf(self): #Element not found
         print('Элемент не найден')
+    def lie(self): #List is empty
+        print('Список пуст')
 
     def newInsert(self,index,value):
         if index < 0:
@@ -39,7 +41,7 @@ class LinkedList():
                 current = current.next
         self.loor()
                 
-    def newPop(self,index):
+    def newPop(self,index = -1):
         if index < 0:
             self.endstart()
         else:
@@ -168,3 +170,11 @@ newList.searchValue(55)
 print('________')
 newList.newAppend(4)
 newList.searchValue(4)
+newList.output()
+print('________')
+# Пустые тесты
+newList = LinkedList([])
+newList.newRemove(0)
+newList.newPop(0)
+newList.output()
+print('________')
