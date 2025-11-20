@@ -1,0 +1,139 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <link rel="stylesheet" href="{% static 'css/normalize.css' %}">
+        <link rel="stylesheet" href="{% static 'css/style.css' %}">
+        <link rel="icon" type="image/x-icon" href="{% static 'images/noti-cropped.svg' %}">
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>OpenGameMusic</title>
+    </head>
+    <body>
+        <div class="header">
+            <img src="{% static 'images/noti.svg' %}" alt="" class="logo">
+        </div>
+    
+    <h1>Upload Song</h1>
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ form.file }}
+        {{ form.title.as_widget }}
+        {{ form.username.as_widget }}
+        <div id="authors">
+            <div id="author-fields">
+                <input type="text" name="authors[]" placeholder="Author">
+            </div>
+             <div>
+                <button type="button" onclick="addAuthorField()">Add Author</button>
+                <button type="button" onclick="removeLastAuthorField()">Delete Author</button>
+            </div>
+        </div>
+        <div id="genres">
+            <div id="genre-fields">
+                <input type="text" name="genres[]" placeholder="Genre">
+            </div>
+            <div>
+                <button type="button" onclick="addGenreField()">Add Genre</button>
+                <button type="button" onclick="removeLastGenreField()">Delete Genre</button>
+            </div>
+        </div>
+        <button type="submit">Upload</button>
+        <button type="reset">Reset</button>
+    </form>
+
+    <h1>Downloads</h1>
+    <form method="get">
+        <input type="text" name="q" value="{{ query }}" placeholder="Search...">
+        <select name="per_page">
+            <option value="5" {% if request.GET.per_page == "5" %}selected{% endif %}>5</option>
+            <option value="10" {% if request.GET.per_page == "10" %}selected{% endif %}>10</option>
+            <option value="20" {% if request.GET.per_page == "20" %}selected{% endif %}>20</option>
+        </select>
+        <button type="submit">Filter</button>
+    </form>
+
+    <div>
+        {% for song in page_obj %}
+            <div>
+                <strong>File:</strong> <a href="{{ song.file.url }}">{{ song.file.name }}</a><br>
+                <strong>Title:</strong> {{ song.title }}<br>
+                <strong>Authors:</strong> {{ song.authors.all|join:", " }}<br>
+                <strong>Genres:</strong> {{ song.genres.all|join:", " }}<br>
+                <strong>User:</strong> {{ song.username }}<br>
+                <strong>Uploaded at:</strong> {{ song.uploaded_at }}<br>
+            </div>
+            <hr>
+        {% empty %}
+        <p>No songs found.</p>
+        {% endfor %}
+    </div>
+
+    <div class="pagination">
+        <span>Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}</span>
+        <div>
+            {% if page_obj.has_previous %}
+                <a href="?page=1&per_page={{ request.GET.per_page }}&q={{ query }}">First</a>
+                <a href="?page={{ page_obj.previous_page_number }}&per_page={{ request.GET.per_page }}&q={{ query }}">Previous</a>
+            {% endif %}
+
+            {% for num in page_obj.paginator.page_range %}
+                {% if num == page_obj.number %}
+                    <strong>{{ num }}</strong>
+                {% elif num > page_obj.number|add:-2 and num < page_obj.number|add:2 %}
+                    <a href="?page={{ num }}&per_page={{ request.GET.per_page }}&q={{ query }}">{{ num }}</a>
+                {% elif num == 1 or num == page_obj.paginator.num_pages %}
+                    <a href="?page={{ num }}&per_page={{ request.GET.per_page }}&q={{ query }}">{{ num }}</a>
+                {% elif num == page_obj.number|add:-3 or num == page_obj.number|add:3 %}
+                    <span>...</span>
+                {% endif %}
+            {% endfor %}
+
+            {% if page_obj.has_next %}
+                <a href="?page={{ page_obj.next_page_number }}&per_page={{ request.GET.per_page }}&q={{ query }}">Next</a>
+                <a href="?page={{ page_obj.paginator.num_pages }}&per_page={{ request.GET.per_page }}&q={{ query }}">Last</a>
+            {% endif %}
+        </div>
+    </div>
+    <script>
+        function addAuthorField() {
+            const authorsDiv = document.getElementById('author-fields');
+            const newInput = document.createElement('input');
+            newInput.type = 'text';
+            newInput.name = 'authors[]';
+            newInput.placeholder = 'Author';
+            authorsDiv.appendChild(newInput);
+        }
+
+        function removeLastAuthorField() {
+            const authorsDiv = document.getElementById('author-fields');
+            const inputFields = authorsDiv.querySelectorAll('input[name="authors[]"]');
+            if (inputFields.length > 1) {
+                authorsDiv.removeChild(inputFields[inputFields.length - 1]);
+            }
+        }
+
+        function addGenreField() {
+            const genresDiv = document.getElementById('genre-fields');
+            const newInput = document.createElement('input');
+            newInput.type = 'text';
+            newInput.name = 'genres[]';
+            newInput.placeholder = 'Genre';
+            genresDiv.appendChild(newInput);
+        }
+        
+        function removeLastGenreField() {
+            const genresDiv = document.getElementById('genre-fields');
+            const inputFields = genresDiv.querySelectorAll('input[name="genres[]"]');
+            if (inputFields.length > 1) {
+                 genresDiv.removeChild(inputFields[inputFields.length - 1]);
+            }
+        }
+         document.addEventListener('DOMContentLoaded', function() {
+            document.getElementById('id_title').placeholder = 'Song Title';
+            document.getElementById('id_username').placeholder = 'Username';
+        });
+    </script>
+</body>
+</html>
