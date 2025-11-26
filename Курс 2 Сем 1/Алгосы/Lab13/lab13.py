@@ -88,6 +88,8 @@ class Tree():
     #         current = current.right
     #         continue
 
+
+#TODO чёт всё сломалось, ссылки хуйни
     def treeRemove(self, value):
         if not self.root:
             self.enf()
@@ -106,6 +108,7 @@ class Tree():
             while current.left.left: #Ищем, current.left - минимальный элемент, не имеет левого потомка (!)
                 current = current.left
             current.left.left, current.left.right, current.left, self.root = current.left, self.root.left, self.root.right, current.left.right
+            self.root, current.left.left, current.left.right, current.left = current.left.right, current.left, self.root.left, self.root.right
             return
             
         # if not root
@@ -122,9 +125,9 @@ class Tree():
                         current.left,minimal.left = minimal, current.left.left
                     while minimal.left.left: # minimal.left будет минимальным
                         minimal = minimal.left
-                    minimal.left.left, minimal.left.right, minimal.left, current.left = minimal.left.right, minimal.left, current.left.left, current.left.right
+                    minimal.left.left, minimal.left.right, minimal.left, current.left = current.left.left, current.left.right, minimal.left.right, minimal.left
                 current = current.left
-            if value > current.value:
+            elif value > current.value:
                 if  current.right and current.right.value == value:
                     if not current.right.left or not current.right.right: # if 0/1 node
                         current.right = (current.right.left if current.right.left else current.right.right)
@@ -135,14 +138,54 @@ class Tree():
                         current.right,minimal.left = minimal, current.right.left
                     while minimal.left.left: # minimal.left будет минимальным
                         minimal = minimal.left
-                    minimal.left.left, minimal.left.right, minimal.left, current.right = minimal.left.right, minimal.left, current.right.left, current.right.right
+                    minimal.left.left, minimal.left.right, minimal.left, current.right = current.right.left, current.right.right, minimal.left.right, minimal.left
                     return
                 current = current.right
         self.enf()
         return
             
+# # поиск в ширину, итеративный
+    def searchWidthIter(self,value):
+        queue = [self.root]
+        res = []
+        while queue:
+            if queue[0].value == value:
+                res.append(queue[0])
+                
+            for element in [queue[0].left,queue[0].right]:
+                if element:
+                    queue.append(element)
+            queue.pop(0)
+        print(f'Элемент найден в древе, {res}')
+            
 
-        
+# # поиск в ширину, рекурсивный
+    def searchWidthRec():
+        pass
+    
+# # поиск в глубину, итеративный
+    def searchDepthIter1():
+        pass
+    
+# # поиск в глубину, рекурсивный
+    def searchDepthRec1():
+        pass
+    
+# # поиск в глубину, итеративный
+    def searchDepthIter2():
+        pass
+    
+# # поиск в глубину, рекурсивный
+    def searchDepthRec2():
+        pass
+    
+# # поиск в глубину, итеративный
+    def searchDepthIter3():
+        pass
+    
+# # поиск в глубину, рекурсивный
+    def searchDepthRec3():
+        pass
 # # Far not the best attempt of output
     # def treeOutput(self, node = None, depth = 0, res=[]):
     #     if depth == 0:
