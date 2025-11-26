@@ -107,8 +107,7 @@ class Tree():
                 return
             while current.left.left: #Ищем, current.left - минимальный элемент, не имеет левого потомка (!)
                 current = current.left
-            current.left.left, current.left.right, current.left, self.root = current.left, self.root.left, self.root.right, current.left.right
-            self.root, current.left.left, current.left.right, current.left = current.left.right, current.left, self.root.left, self.root.right
+            current.left.left, current.left.right, current.left, self.root = self.root.left, self.root.right, current.left.right, current.left
             return
             
         # if not root
