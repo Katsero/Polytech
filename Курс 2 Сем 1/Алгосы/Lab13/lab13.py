@@ -88,8 +88,6 @@ class Tree():
     #         current = current.right
     #         continue
 
-
-#TODO чёт всё сломалось, ссылки хуйни
     def treeRemove(self, value):
         if not self.root:
             self.enf()
@@ -146,43 +144,43 @@ class Tree():
 # # поиск в ширину, итеративный
     def searchWidthIter(self,value):
         queue = [self.root]
-        res = []
         while queue:
             if queue[0].value == value:
-                res.append(queue[0])
+                print(f'Элемент найден в древе, {queue[0]}')
+                return
                 
             for element in [queue[0].left,queue[0].right]:
                 if element:
                     queue.append(element)
             queue.pop(0)
-        print(f'Элемент найден в древе, {res}')
+        print('Элемент не найден в древе')
             
 
 # # поиск в ширину, рекурсивный
     def searchWidthRec():
         pass
     
-# # поиск в глубину, итеративный
+# # поиск в глубину, итеративный 1
     def searchDepthIter1():
         pass
     
-# # поиск в глубину, рекурсивный
+# # поиск в глубину, рекурсивный 1
     def searchDepthRec1():
         pass
     
-# # поиск в глубину, итеративный
+# # поиск в глубину, итеративный 2
     def searchDepthIter2():
         pass
     
-# # поиск в глубину, рекурсивный
+# # поиск в глубину, рекурсивный 2
     def searchDepthRec2():
         pass
     
-# # поиск в глубину, итеративный
+# # поиск в глубину, итеративный 3
     def searchDepthIter3():
         pass
     
-# # поиск в глубину, рекурсивный
+# # поиск в глубину, рекурсивный 3
     def searchDepthRec3():
         pass
 # # Far not the best attempt of output
@@ -224,3 +222,39 @@ newTree.treeRemove(23)
 newTree.treeOutput()
 newTree.treeRemove(87)
 newTree.treeOutput()
+
+#1
+newTree.searchWidthIter(89) # ===
+print(newTree.root.right) # Проверка к предыдущему
+newTree.searchWidthIter('aboba')
+#2
+newTree.searchWidthRec(89) # ===
+print(newTree.root.right) # Проверка к предыдущему
+newTree.searchWidthRec('aboba')
+
+#3
+newTree.searchDepthIter1(89) # ===
+newTree.searchDepthIter1('aboba')
+print(newTree.root.right) # Проверка к предыдущему
+#4
+newTree.searchDepthRec1(89) # ===
+newTree.searchDepthRec1('aboba')
+print(newTree.root.right) # Проверка к предыдущему
+
+#5
+newTree.searchDepthIter2(89) # ===
+newTree.searchDepthIter2('aboba')
+print(newTree.root.right) # Проверка к предыдущему
+#6
+newTree.searchDepthRec2(89) # ===
+newTree.searchDepthRec2('aboba')
+print(newTree.root.right) # Проверка к предыдущему
+
+#7
+newTree.searchDepthIter3(89) # ===
+newTree.searchDepthIter3('aboba')
+print(newTree.root.right) # Проверка к предыдущему
+#8
+newTree.searchDepthRec3(89) # ===
+newTree.searchDepthRec3('aboba')
+print(newTree.root.right) # Проверка к предыдущему
