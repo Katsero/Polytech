@@ -226,7 +226,24 @@ class Tree():
             print('Элемент не найден в древе')
             return
     
-        
+        stack_children = [self.root]
+        stack_parent = []
+        while stack_children:
+            current = stack_children.pop()
+            stack_parent.append(current)
+
+            if current.left:
+                stack_children.append(current.left)
+            if current.right:
+                stack_children.append(current.right)
+
+        while stack_parent:
+            current = stack_parent.pop()
+            if current.value == value:
+                print(f'Элемент найден в древе, {current}')
+                return
+
+        print('Элемент не найден в древе')
 
 # # поиск в глубину, postorder, рекурсивный
     def searchPostorderRec(self, value, current = None, depth = 0):
