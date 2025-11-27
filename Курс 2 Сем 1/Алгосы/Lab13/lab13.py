@@ -35,59 +35,6 @@ class Tree():
             current = current.right
             continue
 
-# # Far not the best attempt of removal
-    # def treeRemove(self, value):
-    #     # # root check
-    #     if not self.root:
-    #         self.nef()
-    #         return
-
-    #     # # root removal
-    #     if self.root.value == value:
-    #         current = self.root.right
-    #         if current:
-    #             if current.left:
-    #                 while current.left.left:
-    #                     current = current.left
-    #                 if current.left.right:
-    #                     current.left, current.left.left, current.left.right, self.root = current.left.right, self.root.left, self.root.right, current.left
-    #                     return
-    #                 # if not current.left.right
-    #                 current = current.left
-    #                 current.left, current.right, self.root = self.root.left, self.root.right, self.root
-    #                 return
-    #             # if not current.left
-    #             current.left, self.root = self.root.left, current
-    #             return
-    #         # if not self.root.right
-    #         self.root = self.root.left
-    #         return
-
-    #     # # node removal
-    #     current = self.root
-    #     while current:
-    #         if value < current.value:
-    #             if current.left and current.left.value == value:
-    #                 if current.left.left and current.left.right: # both nodes
-    #                     if current.left.right.left:
-    #                         while current.left.right.left.left:
-    #                             pass
-    #                         return
-    #                     current.left, current.left.right.left = current.left.right, current.left.left
-    #                     return
-    #                 #if nodes lack
-    #                 current.left = (current.left.left if current.left.left else current.left.right) #take existing one
-    #             # if not current.left or not current.left.value == value
-    #             current = current.left
-    #             continue
-    #         # if value > current.value
-    #         if current.right and current.right.value == value:
-    #             # TODO remove
-    #             return
-    #         # if not current.right or not current.right.value == value
-    #         current = current.right
-    #         continue
-
     def treeRemove(self, value):
         if not self.root:
             self.enf()
@@ -140,7 +87,8 @@ class Tree():
                 current = current.right
         self.enf()
         return
-            
+
+# # # ПОИСКИИИИ   
 # # поиск в ширину, итеративный
     def searchWidthIter(self,value):
         queue = [self.root]
@@ -155,54 +103,54 @@ class Tree():
             queue.pop(0)
         print('Элемент не найден в древе')
             
-
 # # поиск в ширину, рекурсивный
-    def searchWidthRec():
-        pass
+    def searchWidthRec(self, value, queue = None, depth = 0):
+        if not self.root:
+            print('Элемент не найден в древе')
+            return
+        
+        if depth == 0:
+            queue = [self.root]
+        
+        newqueue = []
+        for node in queue:
+            if node.value == value:
+                print(f'Элемент найден в древе, {node}')
+                return
+            if node.left:
+                newqueue.append(node.left)
+            if node.right:
+                newqueue.append(node.right)
+        
+        if newqueue:
+            self.searchWidthRec(value,newqueue, depth + 1)
     
 # # поиск в глубину, итеративный 1
-    def searchDepthIter1():
+    def searchPreorderIter(self, value):
         pass
     
 # # поиск в глубину, рекурсивный 1
-    def searchDepthRec1():
+    def searchPreorderRec(self, value):
         pass
     
 # # поиск в глубину, итеративный 2
-    def searchDepthIter2():
+    def searchInorderIter(self, value):
         pass
     
 # # поиск в глубину, рекурсивный 2
-    def searchDepthRec2():
+    def searchInorderRec(self, value):
         pass
     
 # # поиск в глубину, итеративный 3
-    def searchDepthIter3():
+    def searchPostorderIter(self, value):
         pass
     
 # # поиск в глубину, рекурсивный 3
-    def searchDepthRec3():
+    def searchPostorderRec(self, value):
         pass
-# # Far not the best attempt of output
-    # def treeOutput(self, node = None, depth = 0, res=[]):
-    #     if depth == 0:
-    #         node = self.root
 
-    #     if not res[depth]:
-    #         res[depth] = []
-
-    #     if node:
-    #         res[depth].append(node.value)
-    #         res = self.treeOutput(node.left,depth,res)
-    #         res = self.treeOutput(node.right,depth,res)
-        
-    #     if depth == 0:
-    #         print(res)
-    #     else:
-    #         return(res)
         
     def treeOutput(self, node=None, depth=0):
-        
         if depth == 0:
             print('tree:')
             node = self.root
@@ -224,37 +172,45 @@ newTree.treeRemove(87)
 newTree.treeOutput()
 
 #1
+print('1')
 newTree.searchWidthIter(89) # ===
 print(newTree.root.right) # Проверка к предыдущему
 newTree.searchWidthIter('aboba')
 #2
+print('2')
 newTree.searchWidthRec(89) # ===
 print(newTree.root.right) # Проверка к предыдущему
 newTree.searchWidthRec('aboba')
 
 #3
-newTree.searchDepthIter1(89) # ===
-newTree.searchDepthIter1('aboba')
+print('3')
+newTree.searchPreorderIter(89) # ===
 print(newTree.root.right) # Проверка к предыдущему
+newTree.searchPreorderIter('aboba')
 #4
-newTree.searchDepthRec1(89) # ===
-newTree.searchDepthRec1('aboba')
+print('4')
+newTree.searchPreorderRec(89) # ===
 print(newTree.root.right) # Проверка к предыдущему
+newTree.searchPreorderRec('aboba')
 
 #5
-newTree.searchDepthIter2(89) # ===
-newTree.searchDepthIter2('aboba')
+print('5')
+newTree.searchInorderIter(89) # ===
 print(newTree.root.right) # Проверка к предыдущему
+newTree.searchInorderIter('aboba')
 #6
-newTree.searchDepthRec2(89) # ===
-newTree.searchDepthRec2('aboba')
+print('6')
+newTree.searchInorderRec(89) # ===
 print(newTree.root.right) # Проверка к предыдущему
+newTree.searchInorderRec('aboba')
 
 #7
-newTree.searchDepthIter3(89) # ===
-newTree.searchDepthIter3('aboba')
+print('7')
+newTree.searchPostorderIter(89) # ===
 print(newTree.root.right) # Проверка к предыдущему
+newTree.searchPostorderIter('aboba')
 #8
-newTree.searchDepthRec3(89) # ===
-newTree.searchDepthRec3('aboba')
+print('8')
+newTree.searchPostorderRec(89) # ===
 print(newTree.root.right) # Проверка к предыдущему
+newTree.searchPostorderRec('aboba')
