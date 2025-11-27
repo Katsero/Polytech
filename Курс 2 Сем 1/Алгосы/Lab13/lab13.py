@@ -124,30 +124,80 @@ class Tree():
         
         if newqueue:
             self.searchWidthRec(value,newqueue, depth + 1)
+        else:
+            print('Элемент не найден в древе')
+
     
-# # поиск в глубину, итеративный 1
+# # поиск в глубину, preorder, итеративный
     def searchPreorderIter(self, value):
-        pass
-    
-# # поиск в глубину, рекурсивный 1
-    def searchPreorderRec(self, value):
-        pass
+        if not self.root:
+            print('Элемент не найден в древе')
+            return
+        
+        stack = [self.root]
+        while stack:
+            current = stack.pop(-1)
+            if current.value == value:
+                print(f'Элемент найден в древе, {current}')
+                return
+
+            if current.right:
+                stack.append(current.right)
+            if current.left:
+                stack.append(current.left)
+        print('Элемент не найден в древе')
+
+# # поиск в глубину, preorder, рекурсивный
+    def searchPreorderRec(self, value, current = None, depth = 0):
+        if not self.root:
+            print('Элемент не найден в древе')
+            return False
+        
+        if depth == 0:
+            current = self.root
+
+        if current.value == value:
+            print(f'Элемент найден в древе, {current}')
+            return True
+        
+        if current.left:
+            first = self.searchPreorderRec(value, current.left, depth + 1)
+        else:
+            first = False
+        if current.right:
+            second = self.searchPreorderRec(value, current.right, depth + 1)
+        else:
+            second = False
+        
+        if current == self.root and not first and not second:
+            print('Элемент не найден в древе')
+# Тернарные операторы люблю капец
+        # if current == self.root and not (self.searchPreorderRec(value, current.left, depth + 1) if current.left else False) and not (self.searchPreorderRec(value, current.right, depth + 1) if current.right else False):
+            # print('Элемент не найден в древе')
     
 # # поиск в глубину, итеративный 2
     def searchInorderIter(self, value):
-        pass
+        if not self.root:
+            print('Элемент не найден в древе')
+            return
     
 # # поиск в глубину, рекурсивный 2
     def searchInorderRec(self, value):
-        pass
+        if not self.root:
+            print('Элемент не найден в древе')
+            return
     
 # # поиск в глубину, итеративный 3
     def searchPostorderIter(self, value):
-        pass
+        if not self.root:
+            print('Элемент не найден в древе')
+            return
     
 # # поиск в глубину, рекурсивный 3
     def searchPostorderRec(self, value):
-        pass
+        if not self.root:
+            print('Элемент не найден в древе')
+            return
 
         
     def treeOutput(self, node=None, depth=0):
