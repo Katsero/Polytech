@@ -1,51 +1,49 @@
-class Node():
-    def __init__(self, value, left = None, right = None):
-        self.value = value
-        self.left = left
-        self.right = right
-
 class Pyramide():
-    def __init__(self, arr = None):
-        self.root = None
-        for elem in arr:
-            self.pyramideAppend(elem)
+    def __init__(self, tree = None):
+        self.tree = []
+        for element in tree:
+            self.pyramideAppend(element)
 
-    def pyramideAppend(self, value):
-        if not self.root:
-            self.root = Node(value)
-            return
+    def findParentIndex(self, index):
+        if index == 0:
+            return None
+        return index//2
+    
+    def findLeftChildIndex(self, index):
+        if (index * 2) > len(self.root):
+            return None
+        return index*2
+    
+    def findRightChildIndex(self, index):
+        if ((index * 2)+1) > len(self.root):
+            return None
+        return (index*2) + 1
 
-        queue = [self.root]
-        while queue:
-            current = queue.pop(0)
-            if not current.left:
-                current.left = Node(value)
-                break
-            if not current.right:
-                current.right = Node(value)
-                break
-
-            queue.append(current.left)
-            queue.append(current.right)
-
-        self.pyramideRearrange()
-
-    def pyramideRearrange(self, starting = True):
-        pass
-
+    def pyramideAppend(self,value):
+        self.tree += [value]
         
+        newIndex = len(self.tree)-1
+        while self.findParentIndex(newIndex) != None:
+             if not self.pyramideRearrange(newIndex):
+                 break
+             newIndex = self.findParentIndex(newIndex)
 
-    def output(self, node=None, depth=0):
-        if depth == 0:
-            print('tree:')
-            node = self.root
-
-        if node:
-            print("  "*depth, node.value)
-            self.treeOutput(node.right, depth+1)
-            self.treeOutput(node.left, depth+1)
+    def pyramideRearrange(self, childIndex):
+        parentIndex = self.findParentIndex(childIndex)
+        if self.tree[childIndex] > self.tree[parentIndex]:
+            self.tree[childIndex], self.tree[parentIndex] = self.tree[parentIndex], self.tree[childIndex]
+            return True
+        return False
+    
+    def pyramideOutput(self):
         
-        if depth == 0:
-            print('-------')
-
+        # Сделать вывод с правого поддрева -> корень -> левое поддрево
+        #         10
+        #     20
+        #         15
+        # 45
+        #         10
+        #     40
+        #         35
         
+        return self.tree
