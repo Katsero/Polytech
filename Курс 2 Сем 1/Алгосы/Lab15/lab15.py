@@ -70,9 +70,19 @@ class Pyramide():
         if depth == 0:
             print('-------')
         
+    def pyramideSort(self):
+        # TODO
+        res = []
+        return res
 
 
 # newPyramide = Pyramide([45,2,16,19,81,54,47,15,65])
 newPyramide = Pyramide(arrayCreate())
 newPyramide.pyramideOutput()
 print(newPyramide.tree)
+
+
+# TODO:
+# a: мин/макс пирамида, 
+# b: поиск
+# c: пирамидальная сортировка, время выполнения
