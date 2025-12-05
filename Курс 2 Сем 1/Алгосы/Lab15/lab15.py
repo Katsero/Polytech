@@ -55,6 +55,30 @@ class Pyramide():
             return True
         return False
     
+    def pyramideRemove(self,value):
+        if not self.tree:
+            self.enf(value)
+            return    
+        
+        queue = [1]
+        res = None
+        while queue:
+            current = queue.pop(0)
+            if self.tree[current-1] == value:
+                res = current
+                break
+
+            if self.findLeftChildIndex(current):
+                queue.append(self.findLeftChildIndex(current))
+            if self.findRightChildIndex(current):
+                queue.append(self.findRightChildIndex(current))
+
+        if res:
+            self.tree[res-1] = self.tree[-1]
+            self.tree = self.tree[:-1]
+
+        
+
     def pyramideOutput(self, index = 1, depth = 0):
         
         # Вывод с правого поддрева -> корень -> левое поддрево
@@ -116,6 +140,11 @@ newPyramide.pyramideOutput()
 print(newPyramide.tree)
 newPyramide.pyramideSearch(newPyramide.tree[4])
 newPyramide.pyramideSearch('aboba')
+newPyramide.pyramideOutput()
+print(newPyramide.tree)
+newPyramide.pyramideRemove(newPyramide.tree[3])
+newPyramide.pyramideOutput()
+print(newPyramide.tree)
 
 newPyramide = Pyramide()
 newPyramide.pyramideOutput()
