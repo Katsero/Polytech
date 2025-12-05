@@ -1,5 +1,5 @@
 from random import *
-def arrayCreate(length = 10):
+def arrayCreate(length = 11):
     ##РАЗМЕРНОСТЬ МАССИВА
     array_range = 100
     array = []
@@ -12,8 +12,17 @@ def arrayCreate(length = 10):
 class Pyramide():
     def __init__(self, tree = None):
         self.tree = []
-        for element in tree:
-            self.pyramideAppend(element)
+        if tree:
+            for element in tree:
+                self.pyramideAppend(element)
+
+    # ERRORS
+    def enf(self,value):
+        print(f"Element {value} not found")
+        return
+    def tie(self):
+        print(f'Tree is empty')
+        return
 
     def findParentIndex(self, index):
         if index <= 1:
@@ -57,6 +66,9 @@ class Pyramide():
         #     40
         #         35
         
+        if not self.tree:
+            self.tie()
+            return
 
         if depth == 0:
             print('tree:')
@@ -69,6 +81,28 @@ class Pyramide():
 
         if depth == 0:
             print('-------')
+
+    def pyramideSearch(self,value):
+        if not self.tree:
+            self.enf(value)
+            return    
+        
+        queue = [1]
+        res = []
+        while queue:
+            current = queue.pop(0)
+            if self.tree[current-1] == value:
+                res.append(current-1)
+
+            if self.findLeftChildIndex(current):
+                queue.append(self.findLeftChildIndex(current))
+            if self.findRightChildIndex(current):
+                queue.append(self.findRightChildIndex(current))
+
+        if res:
+            print(f'Elemement {value} found at {res} positions')
+        else:
+            self.enf(value)
         
     def pyramideSort(self):
         # TODO
@@ -80,9 +114,18 @@ class Pyramide():
 newPyramide = Pyramide(arrayCreate())
 newPyramide.pyramideOutput()
 print(newPyramide.tree)
+newPyramide.pyramideSearch(newPyramide.tree[4])
+newPyramide.pyramideSearch('aboba')
 
+newPyramide = Pyramide()
+newPyramide.pyramideOutput()
+newPyramide.pyramideSearch('aboba')
+
+newPyramide = Pyramide([5])
+newPyramide.pyramideOutput()
+newPyramide.pyramideSearch('aboba')
 
 # TODO:
-# a: мин/макс пирамида, 
-# b: поиск
+# a: мин/макс пирамида - выбор, 
+# b: удаление
 # c: пирамидальная сортировка, время выполнения
