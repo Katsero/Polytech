@@ -178,60 +178,60 @@ class Pyramide():
         return res
 
 
-# newPyramide = Pyramide([45,2,16,19,81,54,47,15,65])
-arr = arrayCreate()
+# # newPyramide = Pyramide([45,2,16,19,81,54,47,15,65])
+# arr = arrayCreate()
 
-## max
-newPyramide = Pyramide(arr)
-newPyramide.pyramideOutput()
-print('-------')
-newPyramide.pyramideSearch(newPyramide.tree[4])
-newPyramide.pyramideSearch(46064)
-newPyramide.pyramideOutput()
-print('-------')
-newPyramide.pyramideRemove(newPyramide.tree[0])
-newPyramide.pyramideRemove(46064)
-newPyramide.pyramideOutput()
-print('-------')
+# ## max
+# newPyramide = Pyramide(arr)
+# newPyramide.pyramideOutput()
+# print('-------')
+# newPyramide.pyramideSearch(newPyramide.tree[4])
+# newPyramide.pyramideSearch(46064)
+# newPyramide.pyramideOutput()
+# print('-------')
+# newPyramide.pyramideRemove(newPyramide.tree[0])
+# newPyramide.pyramideRemove(46064)
+# newPyramide.pyramideOutput()
+# print('-------')
 
-## min
-newPyramide = Pyramide(arr, False)
-newPyramide.pyramideOutput()
-print('-------')
-newPyramide.pyramideSearch(-newPyramide.tree[4])
-newPyramide.pyramideSearch(46064)
-newPyramide.pyramideOutput()
-print('-------')
-newPyramide.pyramideRemove(-newPyramide.tree[0])
-newPyramide.pyramideRemove(46064)
-newPyramide.pyramideOutput()
-print('-------')
+# ## min
+# newPyramide = Pyramide(arr, False)
+# newPyramide.pyramideOutput()
+# print('-------')
+# newPyramide.pyramideSearch(-newPyramide.tree[4])
+# newPyramide.pyramideSearch(46064)
+# newPyramide.pyramideOutput()
+# print('-------')
+# newPyramide.pyramideRemove(-newPyramide.tree[0])
+# newPyramide.pyramideRemove(46064)
+# newPyramide.pyramideOutput()
+# print('-------')
 
-## empty
-newPyramide = Pyramide()
-newPyramide.pyramideOutput()
-newPyramide.pyramideRemove(46064)
-newPyramide.pyramideSearch(46064)
-print('-------')
+# ## empty
+# newPyramide = Pyramide()
+# newPyramide.pyramideOutput()
+# newPyramide.pyramideRemove(46064)
+# newPyramide.pyramideSearch(46064)
+# print('-------')
 
-## head only
-newPyramide = Pyramide([5])
-newPyramide.pyramideOutput()
-newPyramide.pyramideSearch(46064)
-print('-------')
+# ## head only
+# newPyramide = Pyramide([5])
+# newPyramide.pyramideOutput()
+# newPyramide.pyramideSearch(46064)
+# print('-------')
 
 
-## sort
-newPyramide = Pyramide(arr)
-newPyramide.pyramideOutput()
-sortedArr = newPyramide.pyramideSort()
-print(sortedArr)
+# ## sort
+# newPyramide = Pyramide(arr)
+# newPyramide.pyramideOutput()
+# sortedArr = newPyramide.pyramideSort()
+# print(sortedArr)
 
-## sort min
-newPyramide = Pyramide(arr, False)
-newPyramide.pyramideOutput()
-sortedArr = newPyramide.pyramideSort()
-print(sortedArr)
+# ## sort min
+# newPyramide = Pyramide(arr, False)
+# newPyramide.pyramideOutput()
+# sortedArr = newPyramide.pyramideSort()
+# print(sortedArr)
 
 
 #Function timer
@@ -241,5 +241,16 @@ def Timer(array,func,number):
     func(array[::],number)
     end_time = time()
     print(end_time - start_time)
+# С лабы 8
+
+newArr = arrayCreate(1000000) # миллион
+newPyramide = Pyramide(newArr) 
+# ???
+# ??? учитывать ли досорт пирамиды в счёт сортировки
+# ???
+start_time = time()
+sortedArr = newPyramide.pyramideSort()
+end_time = time()
+print(end_time - start_time)
 # TODO:
 # c: время выполнения
