@@ -106,14 +106,23 @@ class Pyramide():
         return head
         
     def pyramideRearrange(self, parentIndex):
-        leftChildIndex = self.findLeftChildIndex(parentIndex)
-        if leftChildIndex and self.tree[parentIndex-1] < self.tree[leftChildIndex-1]:
-            self.tree[parentIndex-1], self.tree[leftChildIndex-1] = self.tree[leftChildIndex-1], self.tree[parentIndex-1]
-            self.pyramideRearrange(leftChildIndex)
-        rightChildIndex = self.findRightChildIndex(parentIndex)
-        if rightChildIndex and self.tree[parentIndex-1] < self.tree[rightChildIndex-1]:
-            self.tree[parentIndex-1], self.tree[rightChildIndex-1] = self.tree[rightChildIndex-1], self.tree[parentIndex-1]
-            self.pyramideRearrange(rightChildIndex)
+        while True:
+            largest = parentIndex
+            left = self.findLeftChildIndex(parentIndex)
+            right = self.findRightChildIndex(parentIndex)
+
+            if left is not None and self.tree[left - 1] > self.tree[largest - 1]:
+                largest = left
+            if right is not None and self.tree[right - 1] > self.tree[largest - 1]:
+                largest = right
+
+            if largest == parentIndex:
+                break
+
+            self.tree[parentIndex - 1], self.tree[largest - 1] = \
+                self.tree[largest - 1], self.tree[parentIndex - 1]
+
+            parentIndex = largest
 
     def pyramideSearch(self,value):
         if not self.tree:
