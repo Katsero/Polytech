@@ -1,10 +1,23 @@
 from time import *
 from random import *
 
+# импорт пирамидок из 15 лабы
+import sys
+import os
+
+# Добавляем путь к папке Lab15 в sys.path
+lab15_path = os.path.join(os.path.dirname(__file__), '..', 'Lab15')
+sys.path.append(lab15_path)
+
+from lab15 import Pyramide # type: ignore
+
+def pyraSort(newPyramide):
+    return newPyramide.pyramideSort()
+
 #Function timer
 def Timer(array,func): #TODO оптимизация на результат
-    start_time = time()
     print(func.__name__)
+    start_time = time()
     print(func(array[::]))
     end_time = time()
     print(end_time - start_time)
@@ -111,7 +124,7 @@ def MergeSort(array):
 
     return array
 
-sorters = [BubbleSort,SelectionSort,InsertSort,QuickSort, MergeSort, sorted]
+sorters = [BubbleSort,SelectionSort,InsertSort,QuickSort, MergeSort, pyraSort, sorted]
 ##sorters = [MergeSort] #Отладка
 array = []
 while not array:
@@ -128,4 +141,12 @@ while not array:
 print(array)
 for func in sorters:
     print('------------')
-    Timer(array[::],func)
+    if func == pyraSort:
+        newPyramide = Pyramide(array)
+        print(func.__name__)
+        start_time = time()
+        pyraSort(newPyramide)
+        end_time = time()
+        print(end_time - start_time)
+    else:
+        Timer(array[::],func)

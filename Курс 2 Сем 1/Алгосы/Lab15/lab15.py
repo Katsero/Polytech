@@ -243,14 +243,6 @@ def Timer(array,func,number):
     print(end_time - start_time)
 # С лабы 8
 
-newArr = arrayCreate(1000000) # миллион
-newPyramide = Pyramide(newArr) 
-# ???
-# ??? учитывать ли досорт пирамиды в счёт сортировки
-# ???
-start_time = time()
-sortedArr = newPyramide.pyramideSort()
-end_time = time()
-print(end_time - start_time)
+
 # TODO:
-# c: время выполнения
+# c: время выполнения (в восьмой лабе)
