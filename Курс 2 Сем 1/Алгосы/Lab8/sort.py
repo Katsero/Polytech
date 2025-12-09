@@ -6,7 +6,7 @@ import sys
 import os
 
 # Добавляем путь к папке Lab15 в sys.path
-lab15_path = os.path.join(os.path.dirname(__file__), '..', 'Lab15')
+lab15_path = os.path.join(os.path.dirname(__file__), '..', '+Lab15')
 sys.path.append(lab15_path)
 
 from lab15 import Pyramide # type: ignore

@@ -113,6 +113,7 @@ def ArrayPop_sorted(array,number):
 array = []
 array = ArrayCreate()
 number = array[randrange(0,len(array))]
+#number = int(input())
 print(f"Число с которым проводятся операции: {number}")
 functions_unsorted = [ArraySearch_unsorted, ArrayInsert_unsorted, ArrayPop_unsorted]
 functions_sorted = [ArraySearch_sorted, ArrayInsert_sorted, ArrayPop_sorted, ArrayBinarySearch_sorted]

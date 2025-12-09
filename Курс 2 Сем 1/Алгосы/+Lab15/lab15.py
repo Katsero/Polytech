@@ -188,11 +188,11 @@ class Pyramide():
 
 
 # # newPyramide = Pyramide([45,2,16,19,81,54,47,15,65])
-# arr = arrayCreate()
+arr = arrayCreate()
 
-# ## max
-# newPyramide = Pyramide(arr)
-# newPyramide.pyramideOutput()
+## max
+newPyramide = Pyramide(arr)
+newPyramide.pyramideOutput()
 # print('-------')
 # newPyramide.pyramideSearch(newPyramide.tree[4])
 # newPyramide.pyramideSearch(46064)
