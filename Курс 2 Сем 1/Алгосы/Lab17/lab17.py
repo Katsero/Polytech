@@ -70,9 +70,12 @@ class Graph:
             if self.nodes[cur].state == 0:
                 self.nodes[cur].state = 2
                 result.append(cur)
-                for neighbor, connected in enumerate(self.adjacency_matrix[cur]):
-                    if connected and self.nodes[neighbor].state == 0:
-                        stack.append(neighbor)
+                neighbors = [
+                    i for i, connected in enumerate(self.adjacency_matrix[cur])
+                    if connected and self.nodes[i].state == 0
+                ]
+                for neighbor in reversed(neighbors):
+                    stack.append(neighbor)
 
         self._check_and_reset(result, "DFS")
         return result
@@ -87,19 +90,14 @@ class Graph:
 
 
 matrix = [
-    [0, 1, 1, 0],
-    [1, 0, 1, 1],
-    [1, 1, 0, 0],
-    [0, 1, 0, 0]
+    [0, 0, 4, 0, 0, 0],
+    [0, 0, 1, 0, 1, 0],
+    [4, 1, 0, 1, 1, 0],
+    [0, 0, 1, 0, 0, 1],
+    [0, 1, 1, 0, 0, 1],
+    [0, 0, 0, 1, 1, 0]
 ]
 
 g = Graph(matrix)
-g.bfs(0)
-g.dfs(0)
-
-g = Graph([])
-g.bfs(0)
-g.dfs(0)
-g = Graph([[1,0],[]])
 g.bfs(0)
 g.dfs(0)
