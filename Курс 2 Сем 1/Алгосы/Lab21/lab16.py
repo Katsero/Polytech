@@ -92,12 +92,12 @@ def benchmark_hash():
     total_time = end - start
     avg_time = total_time / iterations
 
-    print(f"\n✅ Результаты:")
+    print(f"\nРезультаты:")
     print(f"Операция: {op_desc}")
     print(f"Размер таблицы: {n}, итераций: {iterations}")
     print(f"Общее время: {total_time:.6f} сек")
     print(f"Среднее время на операцию: {avg_time:.9f} сек")
-    print("💡 Примечание: Время создания таблицы НЕ включено в замер.")
+    print("Примечание: Время создания таблицы НЕ включено в замер.")
 
 
 if __name__ == "__main__":

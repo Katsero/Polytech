@@ -1,24 +1,14 @@
+import time
+import random
+
 class Node:
     def __init__(self, idx):
         self.idx = idx
-        self.state = 0  # 0 — не открыта, 1 — открыта, 2 — закрыта
-
+        self.state = 0
 
 class Graph:
     def __init__(self, adjacency_matrix):
-        self.valid = True
-        self.nodes = []
-        self.adjacency_matrix = []
-
-        if not adjacency_matrix:
-            self.valid = False
-            return
-
         n = len(adjacency_matrix)
-        if not all(len(row) == n for row in adjacency_matrix):
-            self.valid = False
-            return
-
         self.nodes = [Node(i) for i in range(n)]
         self.adjacency_matrix = [list(row) for row in adjacency_matrix]
 
@@ -27,19 +17,10 @@ class Graph:
             node.state = 0
 
     def bfs(self, start_idx):
-        if not self.valid:
-            print("BFS: Граф задан некорректно (матрица не квадратная или пустая)")
-            return []
-
-        if start_idx < 0 or start_idx >= len(self.nodes):
-            print("BFS: Начальная вершина указана неверно — граф не содержит такой вершины")
-            return []
-
         self.reset_states()
         result = []
         queue = [start_idx]
         self.nodes[start_idx].state = 1
-
         while queue:
             cur = queue.pop(0)
             self.nodes[cur].state = 2
@@ -48,23 +29,12 @@ class Graph:
                 if connected and self.nodes[neighbor].state == 0:
                     self.nodes[neighbor].state = 1
                     queue.append(neighbor)
-
-        self._check_and_reset(result, "BFS")
         return result
 
     def dfs(self, start_idx):
-        if not self.valid:
-            print("DFS: Граф задан некорректно (матрица не квадратная или пустая)")
-            return []
-
-        if start_idx < 0 or start_idx >= len(self.nodes):
-            print("DFS: Начальная вершина указана неверно — граф не содержит такой вершины")
-            return []
-
         self.reset_states()
         result = []
         stack = [start_idx]
-
         while stack:
             cur = stack.pop()
             if self.nodes[cur].state == 0:
@@ -76,28 +46,75 @@ class Graph:
                 ]
                 for neighbor in reversed(neighbors):
                     stack.append(neighbor)
-
-        self._check_and_reset(result, "DFS")
         return result
 
-    def _check_and_reset(self, result, method_name):
-        all_closed = all(node.state == 2 for node in self.nodes)
-        if all_closed:
-            print(f"{method_name}: все вершины посещены.\n{result}")
-        else:
-            print(f"{method_name}: не все вершины посещены!\n{result}")
-        self.reset_states()
+
+def generate_sparse_graph(n, density=0.1):
+    matrix = [[0] * n for _ in range(n)]
+    max_edges = int(n * (n - 1) * density / 2)
+    edges = 0
+    attempts = 0
+    while edges < max_edges and attempts < max_edges * 10:
+        i, j = random.sample(range(n), 2)
+        if matrix[i][j] == 0:
+            w = random.randint(1, 10)
+            matrix[i][j] = w
+            matrix[j][i] = w
+            edges += 1
+        attempts += 1
+    return matrix
 
 
-matrix = [
-    [0, 0, 4, 0, 0, 0],
-    [0, 0, 1, 0, 1, 0],
-    [4, 1, 0, 1, 1, 0],
-    [0, 0, 1, 0, 0, 1],
-    [0, 1, 1, 0, 0, 1],
-    [0, 0, 0, 1, 1, 0]
-]
+def benchmark_graph():
+    print("=== Обход графа (BFS/DFS) Benchmark ===")
+    n = int(input("Число вершин (N): "))
+    iterations = int(input("Число итераций: "))
 
-g = Graph(matrix)
-g.bfs(0)
-g.dfs(0)
+    # Фиксированная плотность для честного сравнения
+    density = 0.1
+
+    operations = {
+        '1': ('bfs', 'Обход в ширину (BFS)'),
+        '2': ('dfs', 'Обход в глубину (DFS)'),
+    }
+
+    print("\nВыберите операцию:")
+    for key, (_, name) in operations.items():
+        print(f"{key}. {name}")
+    choice = input("Номер операции: ")
+    if choice not in operations:
+        print("Неверный выбор!")
+        return
+
+    op_name, op_desc = operations[choice]
+
+    # Подготовка: все графы и старты — до таймера
+    test_cases = []
+    for _ in range(iterations):
+        adj_mat = generate_sparse_graph(n, density)
+        g = Graph(adj_mat)
+        start = random.randint(0, n - 1)
+        test_cases.append((g, start))
+
+    # Прогрев
+    g0, s0 = test_cases[0]
+    getattr(g0, op_name)(s0)
+
+    # ЗАМЕР ТОЛЬКО ОБХОДА
+    start_time = time.perf_counter()
+    for graph, start in test_cases:
+        _ = getattr(graph, op_name)(start)
+    end_time = time.perf_counter()
+
+    total = end_time - start_time
+    avg = total / iterations
+
+    print(f"\nРезультаты:")
+    print(f"Операция: {op_desc}")
+    print(f"N = {n}, плотность = {density:.1%} (фиксирована), итераций = {iterations}")
+    print(f"Общее время: {total:.6f} сек")
+    print(f"Среднее время на операцию: {avg:.9f} сек")
+
+
+if __name__ == "__main__":
+    benchmark_graph()
