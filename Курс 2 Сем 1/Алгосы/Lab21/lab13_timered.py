@@ -253,40 +253,34 @@ def benchmark_bst():
 
     op_name, op_desc = operations[choice]
 
-    # Убедимся, что диапазон достаточен для уникальных значений
     actual_range = max(value_range, n * 10)
-    values = random.sample(range(actual_range), n)  # всегда уникальные
-    tree = Tree(values)  # ← создание ВНЕ таймера
-    all_values = values  # исходные значения (уникальны)
+    values = random.sample(range(actual_range), n) 
+    tree = Tree(values) 
+    all_values = values 
 
-    # === Генерация списка аргументов ДО замера ===
     args = []
     if op_name == 'treeAppend':
-        # Генерируем `iterations` новых уникальных значений
         used_set = set(all_values)
         for _ in range(iterations):
             while True:
                 candidate = random.randint(actual_range, actual_range * 2)
                 if candidate not in used_set:
                     args.append(candidate)
-                    used_set.add(candidate)  # избегаем дубликатов между вставками
+                    used_set.add(candidate)
                     break
     else:
-        # Для поиска/удаления — случайные значения из дерева
         for _ in range(iterations):
             args.append(random.choice(all_values))
 
     method = getattr(tree, op_name)
 
-    # Прогрев
     _ = method(args[0])
 
-    # === ЗАМЕР ТОЛЬКО ОПЕРАЦИЙ ===
     start = time.perf_counter()
     for arg in args:
         if op_name == 'treeAppend':
             tree.treeAppend(arg)
-            tree.treeRemove(arg)  # восстанавливаем исходное дерево
+            tree.treeRemove(arg) 
         else:
             _ = method(arg)
     end = time.perf_counter()

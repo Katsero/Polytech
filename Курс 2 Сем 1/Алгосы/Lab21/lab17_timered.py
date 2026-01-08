@@ -70,7 +70,6 @@ def benchmark_graph():
     n = int(input("Число вершин (N): "))
     iterations = int(input("Число итераций: "))
 
-    # Фиксированная плотность для честного сравнения
     density = 0.1
 
     operations = {
@@ -88,7 +87,6 @@ def benchmark_graph():
 
     op_name, op_desc = operations[choice]
 
-    # Подготовка: все графы и старты — до таймера
     test_cases = []
     for _ in range(iterations):
         adj_mat = generate_sparse_graph(n, density)
@@ -96,11 +94,9 @@ def benchmark_graph():
         start = random.randint(0, n - 1)
         test_cases.append((g, start))
 
-    # Прогрев
     g0, s0 = test_cases[0]
     getattr(g0, op_name)(s0)
 
-    # ЗАМЕР ТОЛЬКО ОБХОДА
     start_time = time.perf_counter()
     for graph, start in test_cases:
         _ = getattr(graph, op_name)(start)

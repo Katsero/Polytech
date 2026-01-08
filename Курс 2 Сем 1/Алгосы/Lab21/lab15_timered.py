@@ -55,20 +55,16 @@ def benchmark_heap():
     value_range = int(input("Диапазон значений (0 до RANGE): "))
     iterations = int(input("Число итераций: "))
 
-    # Заготовка: для каждой итерации — свой массив и своя куча (создаются ДО таймера)
     heaps = []
     for _ in range(iterations):
         arr = [random.randint(0, value_range) for _ in range(n)]
         heap = Pyramide(arr, maximal=True)
         heaps.append(heap)
 
-    # Прогрев
     _ = heaps[0].pyramideSort()
-    # Восстановим кучу после прогрева (чтобы состояние было как у остальных)
     arr = [random.randint(0, value_range) for _ in range(n)]
     heaps[0] = Pyramide(arr, maximal=True)
 
-    # ЗАМЕР ТОЛЬКО pyramideSort()
     start = time.perf_counter()
     for heap in heaps:
         _ = heap.pyramideSort()

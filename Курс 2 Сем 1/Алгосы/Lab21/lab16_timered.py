@@ -24,19 +24,20 @@ class HashTable:
     def search_by_value(self, value):
         if not self._is_number(value):
             return []
-        for slot in self.table:
-            if value in slot:
-                return [True]
+        index = self._hash(value)   
+        if value in self.table[index]:
+            return [True]
         return []
 
     def remove(self, value):
         if not self._is_number(value):
             return 0
+        index = self._hash(value)    
+        slot = self.table[index]
         count = 0
-        for slot in self.table:
-            while value in slot:
-                slot.remove(value)
-                count += 1
+        while value in slot:
+            slot.remove(value)
+            count += 1
         return count
 
 
@@ -62,7 +63,6 @@ def benchmark_hash():
 
     op_name, op_desc = operations[choice]
 
-    # Генерация данных ДО замера
     test_cases = []
     for _ in range(iterations):
         values = random.sample(range(value_range), min(n, value_range))
@@ -73,17 +73,14 @@ def benchmark_hash():
             target = random.choice(values)
             test_cases.append((values, target))
 
-    # Создание всех таблиц ДО таймера
     tables_and_args = []
     for values, arg in test_cases:
         ht = HashTable(size=len(values) or 1, arr=values)
         tables_and_args.append((ht, arg))
 
-    # Прогрев
     first_ht, first_arg = tables_and_args[0]
     getattr(first_ht, op_name)(first_arg)
 
-    # ЗАМЕР ТОЛЬКО ОПЕРАЦИЙ
     start = time.perf_counter()
     for ht, arg in tables_and_args:
         getattr(ht, op_name)(arg)
