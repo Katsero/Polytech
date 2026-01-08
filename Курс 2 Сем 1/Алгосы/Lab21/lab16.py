@@ -1,60 +1,36 @@
+import time
+import random
+
 class HashTable:
     def __init__(self, size=10, arr=None):
-        if arr is None:
-            arr = []
-        
-        if size <= 0:
-            print("Ошибка: Размер хеш-таблицы должен быть положительным числом.")
-            size = 1
-        self.size = size
+        self.size = size if size > 0 else 1
         self.table = [[] for _ in range(self.size)]
-        
-        for value in arr:
-            self.insert(value)
+        if arr:
+            for value in arr:
+                self.insert(value)
 
     def _is_number(self, value):
         return isinstance(value, (int, float)) and not isinstance(value, bool)
-
-    def _is_valid_index(self, index):
-        return isinstance(index, int) and 0 <= index < self.size
 
     def _hash(self, value):
         return abs(int(value)) % self.size
 
     def insert(self, value):
         if not self._is_number(value):
-            print(f"Таблица состоит только из чисел")
             return
         index = self._hash(value)
         self.table[index].append(value)
 
     def search_by_value(self, value):
         if not self._is_number(value):
-            print(f"Таблица состоит только из чисел")
             return []
-        indices = []
-        for i, slot in enumerate(self.table):
+        for slot in self.table:
             if value in slot:
-                indices.append(i)
-        return indices
-
-    def search_by_index(self, index):
-        if not self._is_valid_index(index):
-            print(f"Ошибка: индекс {index} вне диапазона [0, {self.size - 1}].")
-            return []
-        return self.table[index][:] 
-
-    def pop(self, index):
-        if not self._is_valid_index(index):
-            print(f"Ошибка: индекс {index} вне диапазона [0, {self.size - 1}]. Удаление пропущено.")
-            return []
-        removed = self.table[index]
-        self.table[index] = []
-        return removed
+                return [True]
+        return []
 
     def remove(self, value):
         if not self._is_number(value):
-            print(f"Таблица состоит только из чисел")
             return 0
         count = 0
         for slot in self.table:
@@ -63,56 +39,66 @@ class HashTable:
                 count += 1
         return count
 
-    def output(self):
-        for i, slot in enumerate(self.table):
-            if slot:
-                print(f"Ячейка {i}: {slot}")
 
-newTable = HashTable(14)
-newTable.output()
-print('--------------')
+def benchmark_hash():
+    print("=== Хеш-таблица Benchmark (время ОПЕРАЦИИ БЕЗ построения) ===")
+    n = int(input("Число элементов в таблице (N): "))
+    value_range = int(input("Диапазон значений (0 до RANGE): "))
+    iterations = int(input("Число итераций: "))
 
-newTable.insert(4)
-newTable.insert(18)
-newTable.insert(32)
-newTable.insert(5)
-newTable.insert(0)
-newTable.insert(1)
-newTable.output()
-print('--------------')
+    operations = {
+        '1': ('insert', 'Вставка нового элемента'),
+        '2': ('search_by_value', 'Поиск существующего элемента'),
+        '3': ('remove', 'Удаление существующего элемента'),
+    }
 
-print(newTable.search_by_index(4))
-print(newTable.search_by_index(1))
-print(newTable.search_by_index(0))
-print(newTable.search_by_index(2))
-newTable.output()
-print('--------------')
+    print("\nВыберите операцию:")
+    for key, (_, name) in operations.items():
+        print(f"{key}. {name}")
+    choice = input("Номер операции: ")
+    if choice not in operations:
+        print("Неверный выбор!")
+        return
 
-print(newTable.search_by_value(18))
-print(newTable.search_by_value(4))
-print(newTable.search_by_value(0))
-print(newTable.search_by_value(6))
-newTable.output()
-print('--------------')
+    op_name, op_desc = operations[choice]
 
-print(newTable.remove(1))
-print(newTable.remove(18))
-print(newTable.remove(3))
-newTable.output()
-print('--------------')
+    # Генерация данных ДО замера
+    test_cases = []
+    for _ in range(iterations):
+        values = random.sample(range(value_range), min(n, value_range))
+        if op_name == 'insert':
+            new_val = random.randint(value_range, value_range * 2)
+            test_cases.append((values, new_val))
+        else:
+            target = random.choice(values)
+            test_cases.append((values, target))
 
-print(newTable.pop(0))
-print(newTable.pop(18))
-print(newTable.pop(3))
-print(newTable.pop(4))
-newTable.output()
-print('--------------')
+    # Создание всех таблиц ДО таймера
+    tables_and_args = []
+    for values, arg in test_cases:
+        ht = HashTable(size=len(values) or 1, arr=values)
+        tables_and_args.append((ht, arg))
 
-newTable.insert('aboba')
-newTable.search_by_index(15)
-newTable.search_by_index('aboba')
-newTable.search_by_value('aboba')
-newTable.pop('aboba')
-newTable.remove('aboba')
-newTable.output()
-print('--------------')
+    # Прогрев
+    first_ht, first_arg = tables_and_args[0]
+    getattr(first_ht, op_name)(first_arg)
+
+    # ЗАМЕР ТОЛЬКО ОПЕРАЦИЙ
+    start = time.perf_counter()
+    for ht, arg in tables_and_args:
+        getattr(ht, op_name)(arg)
+    end = time.perf_counter()
+
+    total_time = end - start
+    avg_time = total_time / iterations
+
+    print(f"\n✅ Результаты:")
+    print(f"Операция: {op_desc}")
+    print(f"Размер таблицы: {n}, итераций: {iterations}")
+    print(f"Общее время: {total_time:.6f} сек")
+    print(f"Среднее время на операцию: {avg_time:.9f} сек")
+    print("💡 Примечание: Время создания таблицы НЕ включено в замер.")
+
+
+if __name__ == "__main__":
+    benchmark_hash()

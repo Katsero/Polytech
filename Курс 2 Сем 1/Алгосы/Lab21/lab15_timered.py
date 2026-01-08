@@ -77,7 +77,7 @@ def benchmark_heap():
     total_time = end - start
     avg_time = total_time / iterations
 
-    print(f"\n✅ Результаты:")
+    print(f"\nРезультаты:")
     print(f"N = {n}, итераций = {iterations}")
     print(f"Общее время: {total_time:.6f} сек")
     print(f"Среднее время на pyramideSort(): {avg_time:.9f} сек")
